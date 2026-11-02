@@ -1,8 +1,14 @@
-export default async function CollectionPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+import Container from "@/components/ui/Container";
+
+export const instant = false;
+
+interface CollectionPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export default async function CollectionPage({ params }: CollectionPageProps) {
   const { slug } = await params;
 
   const title = slug
@@ -11,16 +17,20 @@ export default async function CollectionPage({
     .join(" ");
 
   return (
-    <main className="min-h-screen bg-[#FAF8F4] px-6 py-24 text-center">
-      <p className="text-xs uppercase tracking-[0.3em] text-[#A7834D]">
-        Explore Our Collection
-      </p>
-      <h1 className="mt-5 font-heading text-4xl text-[#211D19] sm:text-6xl">
-        {title}
-      </h1>
-      <p className="mt-6 text-sm text-[#777068]">
-        Discover thoughtfully curated designs and timeless elegance.
-      </p>
+    <main className="min-h-screen bg-[#FAF8F4] py-24">
+      <Container>
+        <p className="text-center text-xs uppercase tracking-[0.3em] text-[#A7834D]">
+          Explore Our Collection
+        </p>
+
+        <h1 className="mt-5 text-center font-heading text-4xl text-[#211D19] sm:text-5xl">
+          {title}
+        </h1>
+
+        <p className="mt-6 text-center text-sm text-[#777068]">
+          Beautiful pieces, thoughtfully curated. Our collection is coming soon.
+        </p>
+      </Container>
     </main>
   );
 }
