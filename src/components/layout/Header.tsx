@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import Container from "@/components/ui/Container";
+import { useCart } from "@/context/CartContext";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -11,9 +12,11 @@ const navigation = [
   { label: "Mehndi Edit", href: "/collections/mehndi" },
   { label: "Luxury Formals", href: "/collections/formals" },
   { label: "Our Story", href: "/about" },
+  { label: "Bridal Edit", href: "/collections/bridal" },
 ];
 
 export default function Header() {
+  const { cartCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -68,8 +71,18 @@ export default function Header() {
             >
               <Search size={19} strokeWidth={1.5} />
             </button>
-            <Link href="/cart" aria-label="Shopping bag">
+            <Link
+              href="/cart"
+              aria-label={`Shopping bag, ${cartCount} items`}
+              className="relative"
+            >
               <ShoppingBag size={19} strokeWidth={1.5} />
+
+              {cartCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-button-gradient px-1 text-[10px] font-bold text-[#59402F]">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>

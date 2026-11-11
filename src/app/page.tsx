@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import Hero from "@/components/home/Hero";
 import FeaturedCollections from "@/components/home/FeaturedCollections";
 import BrandStory from "@/components/home/BrandStory";
+import FeaturedProducts from "@/components/home/FeaturedProducts";
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <FeaturedCollections />
+        <FeaturedProducts />
         <BrandStory />
       </main>
 

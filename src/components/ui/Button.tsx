@@ -16,10 +16,21 @@ export default function Button({
 }: ButtonProps) {
   const styles =
     variant === "primary"
-      ? "bg-charcoal text-white hover:bg-antique-gold hover:text-charcoal"
-      : "border border-charcoal text-charcoal hover:bg-charcoal hover:text-white";
+      ? "bg-button-gradient text-[#59402F] shadow-sm hover:shadow-md hover:-translate-y-0.5"
+      : "border border-[#D9C69B] bg-transparent text-[#59402F] hover:bg-[#FFF0D0]";
 
-  const classes = `inline-flex items-center justify-center px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 ${styles} ${className}`;
+  const classes = `
+    inline-flex items-center justify-center
+    rounded-full px-7 py-3.5
+    text-sm font-semibold
+    tracking-wide
+    transition-all duration-300
+    focus-visible:outline-2
+    focus-visible:outline-offset-4
+    focus-visible:outline-[#E8B65F]
+    ${styles}
+    ${className}
+  `;
 
   if (href) {
     return (
