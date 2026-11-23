@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { useCart } from "@/context/CartContext";
+import Image from "next/image";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -43,13 +44,19 @@ export default function Header() {
             ))}
           </nav>
 
-          <Link href="/" className="text-center whitespace-nowrap">
-            <span className="block font-heading text-2xl tracking-wide sm:text-3xl">
-              The Mehndi Edit
-            </span>
-            <span className="hidden text-[8px] uppercase tracking-[0.35em] text-muted-olive sm:block">
-              A celebration of craftsmanship
-            </span>
+          <Link
+            href="/"
+            className="flex items-center justify-center whitespace-nowrap"
+            aria-label="The Mehndi Edit - Home"
+          >
+            <Image
+              src="/images/logo.png"
+              alt="The Mehndi Edit"
+              width={220}
+              height={70}
+              priority
+              className="h-12 w-auto object-contain sm:h-14"
+            />
           </Link>
 
           <nav className="hidden items-center justify-end gap-5 xl:gap-7 lg:flex">

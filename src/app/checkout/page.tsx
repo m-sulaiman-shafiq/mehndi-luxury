@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
@@ -9,7 +11,11 @@ import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCart();
+  const { items, subtotal, clearCart } = useCart();
+  const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     fullName: "",
@@ -22,18 +28,82 @@ export default function CheckoutPage() {
   });
 
   function handleChange(
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     setForm({ ...form, [event.target.name]: event.target.value });
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError("");
 
-    // Order submission will be connected to the backend in the next stage.
-    alert(
-      "Your checkout details have been captured. Order placement is coming next.",
-    );
+    if (items.length === 0) {
+      setError("Your bag is empty.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Create the order in Supabase.
+      const orderResponse = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          items: items.map((item) => ({
+            productId: item.product.id,
+            quantity: item.quantity,
+            stitching: item.stitching,
+            age: item.age,
+            measurements: item.measurements,
+          })),
+        }),
+      });
+
+      const orderResult = await orderResponse.json();
+
+      if (!orderResponse.ok) {
+        throw new Error(orderResult.error || "Unable to place your order.");
+      }
+
+      // 2. Create a Safepay Sandbox payment session.
+      const paymentResponse = await fetch("/api/payments/safepay/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderNumber: orderResult.orderNumber,
+        }),
+      });
+
+      const paymentResult = await paymentResponse.json();
+
+      if (!paymentResponse.ok) {
+        throw new Error(paymentResult.error || "Unable to initiate payment.");
+      }
+
+      if (
+        !paymentResult.checkoutUrl ||
+        typeof paymentResult.checkoutUrl !== "string"
+      ) {
+        throw new Error("Payment checkout URL was not returned.");
+      }
+
+      // 3. Clear the cart and redirect to Safepay.
+      clearCart();
+      window.location.href = paymentResult.checkoutUrl;
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+      );
+      setIsSubmitting(false);
+    }
   }
 
   if (items.length === 0) {
@@ -135,12 +205,26 @@ export default function CheckoutPage() {
                 />
               </div>
 
+              {error && (
+                <p className="rounded-lg bg-red-50 p-4 text-sm text-red-700">
+                  {error}
+                </p>
+              )}
+
               <button
                 type="submit"
-                className="w-full rounded-full bg-button-gradient px-6 py-4 font-semibold text-[#59402F] transition hover:opacity-90"
+                disabled={isSubmitting}
+                className="w-full rounded-full bg-button-gradient px-6 py-4 font-semibold text-[#59402F] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Continue to Order Review
+                {isSubmitting
+                  ? "Preparing Secure Checkout..."
+                  : "Continue to Secure Payment"}
               </button>
+
+              <p className="text-center text-xs text-[#77704E]">
+                Secure payment processing via Safepay Sandbox. No real money
+                will be charged during testing.
+              </p>
             </form>
 
             <aside className="h-fit rounded-2xl border border-[#EADFCB] bg-white p-6">
@@ -180,7 +264,7 @@ export default function CheckoutPage() {
 
               <p className="mt-4 text-xs leading-6 text-[#77704E]">
                 Delivery charges and applicable taxes will be confirmed before
-                order placement.
+                order fulfilment.
               </p>
             </aside>
           </div>
