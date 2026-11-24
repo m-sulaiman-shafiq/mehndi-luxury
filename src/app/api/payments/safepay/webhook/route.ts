@@ -9,7 +9,11 @@ export async function POST(request: Request) {
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!webhookSecret || !supabaseUrl || !serviceRoleKey) {
-      console.error("Safepay webhook configuration is incomplete.");
+      console.error("Safepay webhook configuration is incomplete:", {
+        hasWebhookSecret: Boolean(webhookSecret),
+        hasSupabaseUrl: Boolean(supabaseUrl),
+        hasServiceRoleKey: Boolean(serviceRoleKey),
+      });
       return NextResponse.json(
         { error: "Webhook configuration is incomplete." },
         { status: 500 },
