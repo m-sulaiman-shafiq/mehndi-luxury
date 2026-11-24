@@ -148,7 +148,6 @@ export async function POST(request: Request) {
 
     // Step 3: Prepare the return URL.
     const resultUrl = new URL("/payment/result", siteUrl);
-    resultUrl.searchParams.set("order", order.order_number);
 
     // Step 4: Generate the hosted checkout URL.
     const checkoutUrl = safepay.checkout.createCheckoutUrl({

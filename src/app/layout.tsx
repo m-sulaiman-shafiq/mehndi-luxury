@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cormorant.variable} ${dmSans.variable}`}>
-        <CartProvider>{children}</CartProvider>
+        <Suspense fallback={null}>
+          <CartProvider>{children}</CartProvider>
+        </Suspense>
       </body>
     </html>
   );
