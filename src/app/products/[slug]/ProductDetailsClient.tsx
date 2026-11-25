@@ -87,15 +87,15 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
       <AnnouncementBar />
       <Header />
 
-      <main className="min-h-screen bg-[#FFF9E9] py-12 md:py-20">
+      <main className="min-h-screen bg-[#FFF9E9] py-8 md:py-8 lg:max-xl:py-10">
         <Container>
-          <div className="mb-8 text-sm text-[#77704E]">
+          <div className="mb-6 text-sm text-[#77704E] lg:max-xl:mb-4">
             <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> /{" "}
             {product.name}
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white">
+          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1fr)] lg:gap-10 xl:gap-16">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white lg:max-xl:aspect-square">
               <Image
                 src={product.image}
                 alt={product.name}
@@ -106,48 +106,50 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
               />
             </div>
 
-            <div className="flex flex-col justify-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#A47743]">
+            <div className="flex flex-col justify-center lg:max-xl:gap-0">
+              <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#A47743]">
                 {product.category} Collection
               </p>
 
-              <h1 className="mt-3">{product.name}</h1>
+              <h1 className="mt-3 lg:max-xl:mt-1 lg:max-xl:text-3xl">
+                {product.name}
+              </h1>
 
-              <p className="mt-4 text-2xl font-semibold text-[#59402F]">
+              <p className="mt-4 !text-green-600 !text-2xl !font-bold text-[#59402F] lg:max-xl:mt-2 lg:max-xl:text-xl">
                 PKR {product.price.toLocaleString("en-PK")}
               </p>
 
-              <p className="mt-6 leading-8 text-[#77704E]">
+              <p className="mt-1 leading-8 text-[#77704E] lg:max-xl:mt-3 lg:max-xl:text-sm lg:max-xl:leading-6">
                 {product.description}
               </p>
 
               {product.madeToOrder && (
-                <p className="mt-5 rounded-lg bg-[#F6CE69]/25 px-4 py-3 text-sm text-[#59402F]">
+                <p className="mt-1 rounded-lg bg-[#F6CE69]/25 px-4 py-3 text-sm text-[#59402F]">
                   Made to order · Crafted especially for your occasion
                 </p>
               )}
 
-              <div className="mt-9">
-                <h2 className="text-xl">Choose your stitching</h2>
+              <div className="mt-2 lg:max-xl:mt-5">
+                <h2>Choose your stitching</h2>
                 <p className="mt-2 text-sm text-[#77704E]">
                   Select how you would like your outfit prepared.
                 </p>
 
-                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:max-xl:mt-3 lg:max-xl:gap-2">
                   <button
                     type="button"
                     onClick={() => {
                       setStitching("unstitched");
                       setSaved(false);
                     }}
-                    className={`rounded-xl border p-5 text-left transition ${
+                    className={`rounded-xl border p-5 text-left transition lg:max-xl:p-3 ${
                       stitching === "unstitched"
                         ? "border-[#D9B96A] bg-[#F6CE69]/20"
                         : "border-[#EADFCB] bg-white"
                     }`}
                   >
                     <span className="block font-semibold">Unstitched</span>
-                    <span className="mt-2 block text-sm text-[#77704E]">
+                    <span className="mt-2 block text-sm text-[#77704E] lg:max-xl:mt-1 lg:max-xl:text-xs">
                       Receive the fabric without stitching.
                     </span>
                   </button>
@@ -155,7 +157,7 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
                   <button
                     type="button"
                     onClick={chooseStitched}
-                    className={`rounded-xl border p-5 text-left transition ${
+                    className={`rounded-xl border p-5 text-left transition lg:max-xl:p-3 ${
                       stitching === "stitched"
                         ? "border-[#D9B96A] bg-[#F6CE69]/20"
                         : "border-[#EADFCB] bg-white"
@@ -186,12 +188,12 @@ export default function ProductDetailsClient({ slug }: { slug: string }) {
                 )}
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 lg:max-xl:mt-5">
                 <button
                   type="button"
                   onClick={handleAddToBag}
                   disabled={adding}
-                  className="w-full rounded-full bg-button-gradient px-8 py-4 font-semibold text-[#59402F] shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:opacity-60"
+                  className="w-full rounded-full bg-button-gradient px-8 py-4 font-semibold text-[#59402F] shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:opacity-60 lg:max-xl:py-3"
                 >
                   {adding ? "Adding to Bag..." : "Add to Bag"}
                 </button>
