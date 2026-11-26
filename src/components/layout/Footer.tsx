@@ -47,18 +47,10 @@ export default function Footer() {
               Customer Care
             </h3>
             <div className="flex flex-col gap-3 text-sm text-white/60">
-              <Link href="/contact" className="hover:text-antique-gold">
-                Contact Us
-              </Link>
-              <Link href="/faqs" className="hover:text-antique-gold">
-                FAQs
-              </Link>
-              <Link href="/shipping" className="hover:text-antique-gold">
-                Shipping & Delivery
-              </Link>
-              <Link href="/policies" className="hover:text-antique-gold">
-                Order Policies
-              </Link>
+              <Link href="/order-policies">Order Policies</Link>
+              <Link href="/shipping-and-delivery">Shipping & Delivery</Link>
+              <Link href="/faqs">FAQs</Link>
+              <Link href="/contact">Contact Us</Link>
             </div>
           </div>
         </div>
